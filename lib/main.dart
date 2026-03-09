@@ -64,14 +64,12 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF05101d),
       body: Center(
         child: FadeTransition(
           opacity: Tween<double>(begin: 1.0, end: 0.0).animate(_fadeController),
           child: Image.asset(
-            'assets/icons/logo_phone_splash_screen.png',
-            // width: 200,
-            // height: 200,
-            fit: BoxFit.contain,
+            'assets/icons/square_logo.png',
           ),
         ),
       ),
