@@ -48,13 +48,15 @@ class _AuthScreenState extends State<AuthScreen> {
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Email'),
                   keyboardType: TextInputType.emailAddress,
-                  validator: (v) => (v == null || v.isEmpty) ? 'Enter email' : null,
+                  validator: (v) =>
+                      (v == null || v.isEmpty) ? 'Enter email' : null,
                   // onSaved: (v) => _email = v ?? '',
                 ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: true,
-                  validator: (v) => (v == null || v.isEmpty) ? 'Enter password' : null,
+                  validator: (v) =>
+                      (v == null || v.isEmpty) ? 'Enter password' : null,
                   // onSaved: (v) => _password = v ?? '',
                 ),
                 const SizedBox(height: 20),

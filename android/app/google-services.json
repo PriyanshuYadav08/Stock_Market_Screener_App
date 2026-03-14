@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "308466822553",
+    "project_id": "quantpulse-553db",
+    "storage_bucket": "quantpulse-553db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308466822553:android:74ce407b1256b436dcf708",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVxasS4sOiyKfjJm5E5CKjcFDBzgbQlV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
