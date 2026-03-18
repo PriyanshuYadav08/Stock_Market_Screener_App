@@ -21,15 +21,9 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
@@ -56,12 +50,33 @@ class DefaultFirebaseOptions {
     measurementId: 'G-V2H0EJZKML',
   );
 
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDVxasS4sOiyKfjJm5E5CKjcFDBzgbQlV0',
+    appId: '1:308466822553:android:74ce407b1256b436dcf708',
+    messagingSenderId: '308466822553',
+    projectId: 'quantpulse-553db',
+    storageBucket: 'quantpulse-553db.firebasestorage.app',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyBilBedyn9ZvvHsenWiIC1KeUmaLvOHll4',
+    appId: '1:308466822553:ios:024d2f0a0c6a3a58dcf708',
+    messagingSenderId: '308466822553',
+    projectId: 'quantpulse-553db',
+    storageBucket: 'quantpulse-553db.firebasestorage.app',
+    androidClientId: '308466822553-tmuqodh8blqtcogm0lm2jk8vva4t1krb.apps.googleusercontent.com',
+    iosClientId: '308466822553-pffua5favpbh1bc0ud9fi76t6g3bo5bf.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutterApplication1',
+  );
+
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBilBedyn9ZvvHsenWiIC1KeUmaLvOHll4',
     appId: '1:308466822553:ios:024d2f0a0c6a3a58dcf708',
     messagingSenderId: '308466822553',
     projectId: 'quantpulse-553db',
     storageBucket: 'quantpulse-553db.firebasestorage.app',
+    androidClientId: '308466822553-tmuqodh8blqtcogm0lm2jk8vva4t1krb.apps.googleusercontent.com',
+    iosClientId: '308466822553-pffua5favpbh1bc0ud9fi76t6g3bo5bf.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
@@ -74,5 +89,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'quantpulse-553db.firebasestorage.app',
     measurementId: 'G-B5SFPN96Z0',
   );
-
 }
