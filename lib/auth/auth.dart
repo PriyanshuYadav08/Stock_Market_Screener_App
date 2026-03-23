@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -49,10 +50,16 @@ class _AuthScreenState extends State<AuthScreen> {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
 
+      // Store last login time
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('lastLogin', DateTime.now().millisecondsSinceEpoch);
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Signed in successfully')),
         );
+        // Navigate to main dashboard
+        Navigator.of(context).pushReplacementNamed('/dashboard');
       }
     } catch (e) {
       debugPrint("Sign-in error: $e");
