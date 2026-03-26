@@ -17,76 +17,151 @@ class _AuthScreenState extends State<AuthScreen> {
     setState(() => _loading = true);
 
     try {
-      // 1. Get the Singleton Instance
       final googleSignIn = GoogleSignIn.instance;
-
-      // 2. MANDATORY: Initialize before any other calls
       await googleSignIn.initialize();
 
-      // 3. AUTHENTICATION: Get the user identity
       final GoogleSignInAccount? googleUser = await googleSignIn.authenticate();
+
       if (googleUser == null) {
         setState(() => _loading = false);
-        return; // User cancelled
+        return;
       }
 
-      // 4. AUTHORIZATION: Explicitly request scopes to get the accessToken
-      // You must specify at least 'email' and 'profile' (or openid)
-      final List<String> scopes = ['email', 'profile'];
-      final authClient = await googleUser.authorizationClient.authorizeScopes(scopes);
+      final authClient = await googleUser.authorizationClient.authorizeScopes([
+        'email',
+        'profile',
+      ]);
 
-      // 5. GET TOKENS:
-      // idToken comes from the .authentication property
-      // accessToken comes from the new authClient
       final googleAuth = await googleUser.authentication;
-      final String? idToken = googleAuth.idToken;
-      final String? accessToken = authClient.accessToken;
 
-      // 6. FIREBASE: Create credential and sign in
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: accessToken,
-        idToken: idToken,
+      final credential = GoogleAuthProvider.credential(
+        accessToken: authClient.accessToken,
+        idToken: googleAuth.idToken,
       );
 
       await FirebaseAuth.instance.signInWithCredential(credential);
 
-      // Store last login time
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt('lastLogin', DateTime.now().millisecondsSinceEpoch);
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Signed in successfully')),
-        );
-        // Navigate to main dashboard
         Navigator.of(context).pushReplacementNamed('/dashboard');
       }
     } catch (e) {
       debugPrint("Sign-in error: $e");
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Sign-in failed: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Sign-in failed')));
       }
     } finally {
-      if (mounted) {
-        setState(() => _loading = false);
-      }
+      if (mounted) setState(() => _loading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Center(
-        child: _loading
-            ? const CircularProgressIndicator()
-            : ElevatedButton.icon(
-                onPressed: _signInWithGoogle,
-                icon: const Icon(Icons.login),
-                label: const Text('Sign in with Google'),
+      backgroundColor: const Color(0xFF05101E),
+
+      body: Stack(
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'QuantPulse',
+                    style: TextStyle(
+                      color: Color(0xFF26A899),
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  const Text(
+                    'Smart Market Insights. Powered by AI.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  Image(
+                    image: const AssetImage('assets/icons/only_logo.png'),
+                    height: 250,
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  GestureDetector(
+                    onTap: _loading ? null : _signInWithGoogle,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 14,
+                        horizontal: 20,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0E3282),
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.4),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(Icons.login, color: Color(0xFF26A899)),
+                          SizedBox(width: 10),
+                          Text(
+                            'Sign in with Google',
+                            style: TextStyle(
+                              color: Color(0xFF26A899),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  const Text(
+                    'Secure login powered by Google',
+                    style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
               ),
+            ),
+          ),
+
+          if (_loading)
+            Container(
+              color: Colors.black.withOpacity(0.6),
+              child: const Center(
+                child: CircularProgressIndicator(color: Color(0xFF26A899)),
+              ),
+            ),
+        ],
       ),
     );
   }
